@@ -1,4 +1,4 @@
-package com.company;
+
 
 
 import javax.imageio.ImageIO;
@@ -12,7 +12,9 @@ public class SerializableImage implements Serializable {
 
     public SerializableImage() throws IOException
     {
+        super();
         this.ib = new byte[0];
+        
     }
 
     public final void setImage(BufferedImage in) throws IOException

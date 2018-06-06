@@ -1,23 +1,40 @@
-package com.company;
-import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.io.File;
-import java.io.IOException;
-import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.net.URL;
-import java.nio.Buffer;
+import java.rmi.*;
+import java.rmi.server.*;
 
+public class RIImplement extends UnicastRemoteObject implements ImageProcessor {
+    private BufferedImage img;
 
-public class ImageProcessImple {
-    public static void main(String args[]) throws IOException{
-        File f = null;
+    RIImplement() throws RemoteException{
+        super();
+    }
+
+    public int add(int x, int y){
+        return x + y;
+    }
+    public String sendSerializableImage(SerializableImage si){
+        BufferedImage bi;
+        bi = si.getImage();
+        if (bi == null) {
+            return "Sending failed";
+        }else{
+            this.img = bi;
+            createImage(this.img);
+            return "Sending sucessful";
+        }
+    }
+    public SerializableImage recvSerializableImage(){
+        return null;
+    }
+    public void createImage(BufferedImage bi){
         try{
-            URL path = ImageProcessImple.class.getResource("Berry.JPG");
-            f = new File(path.getFile());
-            BufferedImage img = ImageIO.read(f);
+
             //For testing purpose, remove later
-            BufferedImage img_manipulated = manipulateImage(img);
+            BufferedImage img_manipulated = manipulateImage(bi);
 
             File output = new File("D://Img//OutputBerry.jpg");
             ImageIO.write(img_manipulated, "jpg", output);
@@ -29,6 +46,7 @@ public class ImageProcessImple {
             System.out.println("Error" + e);
         }
     }
+
     private static BufferedImage manipulateImage(BufferedImage img){
         BufferedImage img_mirrored = null;
         try{
@@ -49,6 +67,7 @@ public class ImageProcessImple {
         }
         return img_mirrored;
     }
+    
     private static boolean analyzePixel(Color c){
         int red = c.getRed();
         int green = c.getGreen();
@@ -63,4 +82,5 @@ public class ImageProcessImple {
         }
 
     }
+
 }
