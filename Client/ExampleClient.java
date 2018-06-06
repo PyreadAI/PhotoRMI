@@ -1,5 +1,6 @@
 
 import javax.imageio.ImageIO;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -23,17 +24,33 @@ public class ExampleClient {
             // x = sc.nextInt();
             // st.createImage();
             //
-            SerializableImage si = createSerializableImage("Berry.JPG");
+            SerializableImage si_created = createSerializableImage("Berry.JPG");
             //Error handling: not valid file
-            if(si == null) System.out.println("not valid file");
+            if(si_created == null) System.out.println("not valid file");
             //Error handling: send serialzable image failed
-            ip.sendSerializableImage(si);
+            String msg = ip.sendSerializableImage(si_created);
+            System.out.println(msg);
+            SerializableImage si_recv = ip.recvSerializableImage();
+            try{
+                processReceivedSerializableImage(si_recv);
+                System.out.println("process successful");
+            }catch(Exception e){
+                System.out.println("process failed");
+            }
+            // if(bi_recv == null){
+            //     System.out.println("cannot recv image");
+            // }else{
+            //     File output = new File("D://Img//OutputBerryClient.jpg");
+            //     ImageIO.write(img_manipulated, "jpg", output);
+            // }
+            
             // System.out.println("the sum: " + st.add(x,y));
         } catch (Exception e) {
             System.err.println("Client exception: " + e.toString());
             e.printStackTrace();
         }
     }
+
     public static SerializableImage createSerializableImage(String str){
         File f = null;
         try{
@@ -47,8 +64,14 @@ public class ExampleClient {
 
         }catch (Exception e){
             //Error handling: Cannot transform to SI
-            // System.out.println("Error" + e);
             return null;
         }
+    }
+    //right now for testing
+    public static void processReceivedSerializableImage(SerializableImage bi) throws Exception{
+
+        BufferedImage bi_recv = bi.getImage();
+        File output = new File("D://Img//OutputBerryClient.jpg");
+        ImageIO.write(bi_recv, "jpg", output);
     }
 }

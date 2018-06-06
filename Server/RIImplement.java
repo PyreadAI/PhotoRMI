@@ -22,29 +22,38 @@ public class RIImplement extends UnicastRemoteObject implements ImageProcessor {
         if (bi == null) {
             return "Sending failed";
         }else{
-            this.img = bi;
-            createImage(this.img);
-            return "Sending sucessful";
+            try{
+                setManipulatedImage(bi);
+                return "Sending sucessful";
+            }catch(Exception e){
+                return "Sending sucessful but Manipulation failed";
+            }   
         }
     }
+
     public SerializableImage recvSerializableImage(){
-        return null;
-    }
-    public void createImage(BufferedImage bi){
+       
         try{
-
-            //For testing purpose, remove later
-            BufferedImage img_manipulated = manipulateImage(bi);
-
-            File output = new File("D://Img//OutputBerry.jpg");
-            ImageIO.write(img_manipulated, "jpg", output);
-
-            System.out.println("success");
-
-        }catch (Exception e){
-            //need to adjust to client side rendering
-            System.out.println("Error" + e);
+            SerializableImage si_to_recv = new SerializableImage();
+            si_to_recv.setImage(this.img);
+            return si_to_recv;
+            
+        }catch(Exception e){
+            //let client handle the error
+            System.out.println("recv failed");
+            return null;
         }
+       
+    }
+
+    public void setManipulatedImage(BufferedImage bi) throws Exception{
+        //For testing purpose, remove later
+        BufferedImage img_manipulated = manipulateImage(bi);
+        this.img = img_manipulated;
+        File output = new File("D://Img//OutputBerry.jpg");
+        ImageIO.write(img_manipulated, "jpg", output);
+
+        System.out.println("set manipulated image success");
     }
 
     private static BufferedImage manipulateImage(BufferedImage img){
