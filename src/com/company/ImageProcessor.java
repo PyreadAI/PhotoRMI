@@ -5,6 +5,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface ImageProcessor extends Remote {
-    void setImage() throws RemoteException;
-    BufferedImage getImage();
+//    SerializableImage serializeImage(BufferedImage bi) throws RemoteException;
+    String sendSerializableImage(SerializableImage si) throws RemoteException;
+    SerializableImage recvSerializableImage() throws RemoteException;
 }

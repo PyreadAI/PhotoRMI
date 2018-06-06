@@ -1,26 +1,36 @@
 package com.company;
-import java.io.*;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
+
+
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.io.Serializable;
+
+// Class that encapsulates bufferedImage that can be serializable
 public class SerializableImage implements Serializable {
-    transient List<BufferedImage> images;
+    private byte[] ib;
 
-    private void writeObject(ObjectOutputStream out) throws IOException {
-        out.defaultWriteObject();
-        out.writeInt(images.size()); // how many images are serialized?
-        for (BufferedImage eachImage : images) {
-            ImageIO.write(eachImage, "png", out); // png is lossless
+    public SerializableImage() throws IOException
+    {
+        this.ib = new byte[0];
+    }
+
+    public final void setImage(BufferedImage in) throws IOException
+    {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ImageIO.write(in, "jpg", outputStream);
+        this.ib = outputStream.toByteArray();
+    }
+
+    public BufferedImage getImage()
+    {
+        try {
+            return ImageIO.read(new ByteArrayInputStream(this.ib));
+        } catch (Exception io)
+        {
+            return null;
         }
     }
 
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject();
-        final int imageCount = in.readInt();
-        images = new ArrayList<BufferedImage>(imageCount);
-        for (int i=0; i<imageCount; i++) {
-            images.add(ImageIO.read(in));
-        }
-    }
+
 }

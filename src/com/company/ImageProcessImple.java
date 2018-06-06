@@ -40,7 +40,7 @@ public class ImageProcessImple {
                     Color c = new Color(img.getRGB(x,y));
                     boolean checker = analyzePixel(c);
                     Color myPixelColor = checker ? new Color(0,0,0): new Color(255, 255, 255);
-                    img_mirrored.setRGB((img_width - 1)-x, y, myPixelColor.getRGB());
+                    img_mirrored.setRGB(x, (img_height-1)-y, myPixelColor.getRGB());
                 }
             }
 
