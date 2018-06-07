@@ -28,6 +28,7 @@ public class ExampleClient extends JFrame {
     // private static JPanel contentPane;  
     private static JFrame f;
     private static JTextField jtf;
+    private static JFrame f_img;
     // private static Jbutton b;
 
     public String img_path;
@@ -90,8 +91,7 @@ public class ExampleClient extends JFrame {
 
         BufferedImage bi_recv = bi.getImage();
         return bi_recv;
-        // File output = new File("D://Img//OutputBerryClient.jpg");
-        // ImageIO.write(bi_recv, "jpg", output);
+        
     }
 
     public static JFrame runJF(ImageProcessor ip){
@@ -126,11 +126,15 @@ public class ExampleClient extends JFrame {
                 try{
                     SerializableImage si_recv = ip.recvSerializableImage();
                     BufferedImage bi_recv = processReceivedSerializableImage(si_recv);
-                    JPanel jp_img = new JPanel();
-                    jp_img.setSize(bi_recv.getWidth(), bi_recv.getHeight());
-                    jp_img.paint(bi_recv.getGraphics());
-                    f.add(jp_img);
+                    f_img = new JFrame();
+                    f_img.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+                    // f.add(new JScrollPane(test));s
+                    // f.setLocation(200,200);
+                    // JPanel jp_img = new JPanel();
+                    // jp_img.setSize(9990,9990);
+                    f_img.setContentPane(new JLabel(new ImageIcon(bi_recv)));
                     System.out.println("process successful");
+                    f_img.setVisible(true);
                 } catch(Exception ex){
                     System.out.println("process failed");
                 }
