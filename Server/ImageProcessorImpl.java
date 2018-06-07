@@ -6,10 +6,10 @@ import java.net.URL;
 import java.rmi.*;
 import java.rmi.server.*;
 
-public class RIImplement extends UnicastRemoteObject implements ImageProcessor {
+public class ImageProcessorImpl extends UnicastRemoteObject implements ImageProcessor {
     private BufferedImage img;
 
-    RIImplement() throws RemoteException{
+    ImageProcessorImpl() throws RemoteException{
         super();
     }
 
@@ -50,8 +50,8 @@ public class RIImplement extends UnicastRemoteObject implements ImageProcessor {
         //For testing purpose, remove later
         BufferedImage img_manipulated = manipulateImage(bi);
         this.img = img_manipulated;
-        File output = new File("D://Img//OutputBerry.jpg");
-        ImageIO.write(img_manipulated, "jpg", output);
+        // File output = new File("D://Img//OutputBerry.jpg");
+        // ImageIO.write(img_manipulated, "jpg", output);
 
         System.out.println("set manipulated image success");
     }
